@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZEKA v8.5: Mega Cybernetic Update</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --neon-purple: #a855f7;
+            --neon-emerald: #10b981;
+            --neon-blue: #3b82f6;
+            --neon-red: #ef4444;
+            --neon-cyan: #06b6d4;
+            --dark-glass: rgba(11, 15, 25, 0.85);
+            --darker-glass: rgba(5, 8, 15, 0.95);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #030712;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 40%),
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-size: 100%, 100%, 20px 20px, 20px 20px;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .orbitron-font { font-family: 'Orbitron', sans-serif; }
+        .terminal-font { font-family: 'Share Tech Mono', monospace; }
+        
+        .glass-panel {
+            background: linear-gradient(145deg, var(--dark-glass), var(--darker-glass));
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .holo-base {
+            width: 250px; height: 40px;
+            background: radial-gradient(ellipse at center, rgba(6, 182, 212, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+            animation: holoPulse 3s infinite alternate;
+            z-index: 0; pointer-events: none;
+        }
+        @keyframes holoPulse { 100% { opacity: 0.5; transform: translateX(-50%) scale(0.9); } }
+
+        .glitch-effect { animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite; }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 1px) }
+            40% { transform: translate(-1px, -2px) }
+            60% { transform: translate(2px, 1px) }
+            80% { transform: translate(1px, -1px) }
+            100% { transform: translate(0) }
+        }
+
+        .shake-effect { animation: shake 0.2s cubic-bezier(.25, .46, .45, .94) both infinite; }
+        @keyframes shake {
+            0% { transform: translate(0) }
+            25% { transform: translate(-3px, 2px) }
+            50% { transform: translate(3px, -2px) }
+            75% { transform: translate(-2px, -3px) }
+            100% { transform: translate(0) }
+        }
+
+        .shake-hard { animation: shakeHard 0.1s infinite; }
+        @keyframes shakeHard {
+            0% { transform: translate(0) }
+            25% { transform: translate(-10px, 10px) }
+            50% { transform: translate(10px, -10px) }
+            75% { transform: translate(-10px, -10px) }
+            100% { transform: translate(0) }
+        }
+
+        .head-perspective { perspective: 1500px; width: 100%; height: 100%; position: relative; }
+        .head-inner { width: 100%; height: 100%; position: relative; transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+        .head-inner.flipped { transform: rotateY(180deg); }
+        .head-front, .head-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; }
+        .head-back { transform: rotateY(180deg); background: #0d1511; border-radius: 2.5rem; border: 6px solid #334155; box-shadow: inset 0 0 50px #000; overflow: hidden; }
+        
+        .fan-blade { transform-origin: center; animation: spin-fast 0.5s linear infinite; }
+        @keyframes spin-fast { 100% { transform: rotate(360deg); } }
+        .led-blink { animation: blinker 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite alternate; }
+        @keyframes blinker { 100% { opacity: 0.2; box-shadow: none; } }
+
+        .party-mode { animation: rgbParty 0.5s linear infinite; }
+        @keyframes rgbParty {
+            0% { box-shadow: 0 0 25px #ff0000, inset 0 0 10px #ff0000; background-color: #ff0000; }
+            33% { box-shadow: 0 0 25px #00ff00, inset 0 0 10px #00ff00; background-color: #00ff00; }
+            66% { box-shadow: 0 0 25px #0000ff, inset 0 0 10px #0000ff; background-color: #0000ff; }
+            100% { box-shadow: 0 0 25px #ff0000, inset 0 0 10px #ff0000; background-color: #ff0000; }
+        }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(6, 182, 212, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(6, 182, 212, 0.8); }
+
+        .face-color-trans { transition: background-color 0.4s, box-shadow 0.4s, border-radius 0.3s ease, height 0.4s ease; }
+    </style>
+</head>
+
+<body class="min-h-screen p-2 sm:p-4 flex flex-col relative selection:bg-cyan-500/30">
+
+    <!-- LOGIN SCREEN OVERLAY (SISTEM IDENTIFIKASI) -->
+    <div id="login-overlay" class="fixed inset-0 bg-[#030712] z-[10000] flex items-center justify-center transition-all duration-700">
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[length:30px_30px] z-0 pointer-events-none"></div>
+        <div class="glass-panel p-8 rounded-3xl border border-cyan-500/50 shadow-[0_0_50px_rgba(6,182,212,0.2)] max-w-sm w-full relative z-10 flex flex-col items-center">
+            <div class="w-20 h-20 bg-slate-900 rounded-full border-2 border-cyan-500 shadow-[0_0_20px_#06b6d4] flex items-center justify-center mb-6 relative overflow-hidden">
+                <div class="absolute w-full h-1 bg-cyan-400/80 shadow-[0_0_10px_#06b6d4] animate-[scan_2s_ease-in-out_infinite_alternate]"></div>
+                <i class="fa-solid fa-fingerprint text-4xl text-cyan-400"></i>
+            </div>
+            
+            <h2 class="orbitron-font text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-1">IDENTIFIKASI</h2>
+            <p class="terminal-font text-[10px] text-gray-400 mb-6 tracking-widest text-center uppercase">Masukkan Callsign untuk memulai</p>
+            
+            <div class="w-full mb-6">
+                <input type="text" id="login-username" class="w-full bg-[#050810] border border-cyan-500/50 rounded-xl px-4 py-3 text-cyan-300 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 shadow-[inset_0_0_15px_rgba(0,0,0,0.8)] transition-all terminal-font uppercase text-center font-bold tracking-widest" placeholder="NAMA KAMU..." autocomplete="off">
+            </div>
+            
+            <button onclick="establishConnection()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold py-3.5 rounded-xl border border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all group overflow-hidden relative">
+                <div class="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></div>
+                <span class="terminal-font tracking-widest text-xs relative z-10"><i class="fa-solid fa-bolt mr-2"></i> INITIALIZE LINK</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Efek Cahaya Flash -->
+    <div id="flash-effect" class="fixed inset-0 bg-white z-[9999] pointer-events-none opacity-0 transition-opacity duration-75"></div>
+    
+    <!-- Laser Screen Filter Overlay -->
+    <div id="laser-overlay" class="fixed inset-0 bg-red-600/30 z-[9998] pointer-events-none opacity-0 transition-opacity duration-150 mix-blend-screen border-[20px] border-red-500/0"></div>
+
+    <!-- Equalizer Audio Overlay -->
+    <div id="audio-wave-panel" class="fixed top-4 right-4 z-50 hidden bg-cyan-950/90 border border-cyan-500 p-2.5 rounded-xl backdrop-blur-md flex items-center gap-3 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+        <i class="fa-solid fa-waveform text-cyan-400 animate-pulse"></i>
+        <div class="flex gap-1 items-end h-4">
+            <span class="w-1.5 bg-cyan-400 rounded-t animate-[pulse_0.3s_infinite] h-[40%]"></span>
+            <span class="w-1.5 bg-cyan-400 rounded-t animate-[pulse_0.4s_infinite] h-[80%]"></span>
+            <span class="w-1.5 bg-cyan-400 rounded-t animate-[pulse_0.2s_infinite] h-[100%]"></span>
+            <span class="w-1.5 bg-cyan-400 rounded-t animate-[pulse_0.5s_infinite] h-[60%]"></span>
+        </div>
+    </div>
+
+    <header class="w-full max-w-[1400px] mx-auto mb-4 flex flex-col lg:flex-row justify-between items-center gap-4 border-b border-cyan-500/20 pb-4 mt-2">
+        <div class="flex items-center gap-5 w-full lg:w-auto">
+            <div class="w-16 h-16 rounded-2xl bg-slate-900 flex items-center justify-center border-2 border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.3)] relative overflow-hidden group">
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-600/20 to-purple-600/20"></div>
+                <div class="absolute w-full h-1 bg-cyan-400/50 shadow-[0_0_10px_#06b6d4] animate-[scan_2s_ease-in-out_infinite_alternate]"></div>
+                <i class="fa-solid fa-microchip text-cyan-300 text-3xl z-10 drop-shadow-[0_0_8px_#06b6d4]"></i>
+            </div>
+            <div class="flex-grow">
+                <div class="flex flex-col sm:flex-row sm:items-end gap-2 mb-1">
+                    <h1 class="orbitron-font text-3xl sm:text-4xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 drop-shadow-lg">
+                        ZEKA V8.5
+                    </h1>
+                    <span class="px-2 py-1 rounded text-[9px] font-black bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 animate-pulse mb-1 shadow-[0_0_10px_rgba(6,182,212,0.4)]">CYBERNETIC AI</span>
+                </div>
+                <p class="text-[11px] text-gray-400 font-bold tracking-widest uppercase terminal-font flex items-center gap-2">
+                    <i class="fa-solid fa-fingerprint text-purple-500"></i> CREATOR: <span id="creator-name-display" class="text-cyan-400 glow-text">UNKNOWN</span> | SYS_STATUS: ONLINE
+                </p>
+            </div>
+        </div>
+        
+        <!-- Quantum Core & Sync Dashboard -->
+        <div class="flex items-center gap-4 bg-slate-900/80 p-3 rounded-2xl border border-gray-700 shadow-xl z-50 min-w-[320px]">
+            <div class="flex-grow flex flex-col gap-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-[9px] text-gray-400 font-bold terminal-font tracking-widest"><i class="fa-solid fa-network-wired text-purple-400"></i> NEURAL SYNC</span>
+                    <span id="sync-text" class="text-xs text-purple-400 font-bold terminal-font">100%</span>
+                </div>
+                <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-gray-700">
+                    <div id="sync-bar" class="h-full bg-purple-500 shadow-[0_0_8px_#a855f7] transition-all duration-500"></div>
+                </div>
+                <div class="flex justify-between items-center mt-1">
+                    <span class="text-[9px] text-gray-400 font-bold terminal-font tracking-widest"><i class="fa-solid fa-temperature-arrow-up text-red-400"></i> CORE TEMP</span>
+                    <span id="temp-text" class="text-xs text-cyan-400 font-bold terminal-font">40°C</span>
+                </div>
+                <div class="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden border border-gray-700">
+                    <div id="temp-bar" class="h-full bg-cyan-500 shadow-[0_0_8px_#06b6d4] transition-all duration-500" style="width: 40%"></div>
+                </div>
+            </div>
+            
+            <button onclick="toggleOverclock()" id="btn-overclock" class="w-12 h-12 rounded-xl bg-slate-800 border border-slate-600 hover:bg-slate-700 text-gray-400 flex flex-col items-center justify-center transition-all group relative shadow-md flex-shrink-0">
+                <i class="fa-solid fa-bolt group-hover:text-cyan-400 transition-colors"></i>
+                <span class="text-[5px] font-bold mt-1 tracking-widest">OVRCLK</span>
+                <div id="oc-indicator" class="w-full h-0.5 bg-slate-600 absolute bottom-0 rounded-b-xl transition-colors"></div>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch pb-10">
+        
+        <div class="lg:col-span-5 flex flex-col gap-5">
+            
+            <!-- Hologram Robot -->
+            <div class="glass-panel rounded-3xl flex-grow border border-gray-700 relative overflow-hidden flex flex-col min-h-[480px]">
+                <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[length:30px_30px] z-0 pointer-events-none"></div>
+                
+                <div class="flex justify-between items-center px-4 py-3 z-20 relative bg-gradient-to-b from-slate-950/90 to-transparent">
+                    <span class="text-[10px] text-cyan-400 uppercase tracking-widest font-black terminal-font flex items-center gap-2 bg-cyan-950/30 px-3 py-1 rounded border border-cyan-500/30 shadow-inner">
+                        <span id="ai-status-dot" class="inline-block w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                        <span id="ai-status-text">AI ACTIVE</span>
+                    </span>
+                    <button onclick="toggleMaintenance()" id="btn-maintenance" class="text-[9px] text-yellow-400 font-bold tracking-wider uppercase bg-yellow-950/30 hover:bg-yellow-900/50 px-3 py-1 rounded border border-yellow-600/50 transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(234,179,8,0.2)]">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> MODE TEKNISI
+                    </button>
+                </div>
+
+                <div class="flex-grow flex items-center justify-center relative p-6 z-10 head-perspective" id="main-robot-container">
+                    <div class="holo-base"></div>
+
+                    <!-- ORBITING COMPANION DRONE (NEW) -->
+                    <div id="companion-drone" class="absolute top-1/2 left-1/2 w-8 h-8 rounded-full bg-cyan-400/20 border-2 border-cyan-400 shadow-[0_0_20px_#06b6d4] flex items-center justify-center hidden z-30 pointer-events-none">
+                        <div class="w-3 h-3 bg-white rounded-full animate-pulse shadow-[0_0_10px_#fff]"></div>
+                        <div class="absolute w-12 h-0.5 bg-cyan-300/50 rotate-45 animate-spin"></div>
+                    </div>
+
+                    <div class="head-inner" id="robot-head-inner">
+                        
+                        <!-- FRONT FACE -->
+                        <div class="head-front flex items-center justify-center">
+                            <div id="glow-bg" class="absolute w-[360px] h-[360px] rounded-full border border-cyan-500/20 shadow-[0_0_50px_rgba(6,182,212,0.15)] transition-colors duration-500 animate-[pulse_4s_infinite] z-0"></div>
+                            
+                            <div class="w-72 h-72 rounded-[3.5rem] bg-gradient-to-br from-slate-200 via-slate-400 to-slate-700 p-2.5 shadow-[0_25px_50px_rgba(0,0,0,0.8),0_0_30px_rgba(6,182,212,0.2)] relative z-10 border-t-2 border-white/80 border-b-4 border-b-slate-800">
+                                <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-14 h-6 bg-slate-300 rounded-t-full border-t border-x border-white/80 flex justify-center items-start shadow-xl">
+                                    <div class="w-4 h-4 bg-cyan-400 rounded-full mt-0.5 shadow-[0_0_15px_#06b6d4] transition-all duration-300" id="antenna"></div>
+                                </div>
+                                <div class="absolute -left-3.5 top-1/2 -translate-y-1/2 w-5 h-24 bg-slate-800 rounded-l-2xl border-y border-l border-slate-500 shadow-[inset_0_0_15px_rgba(0,0,0,1)]"></div>
+                                <div class="absolute -right-3.5 top-1/2 -translate-y-1/2 w-5 h-24 bg-slate-800 rounded-r-2xl border-y border-r border-slate-500 shadow-[inset_0_0_15px_rgba(0,0,0,1)]"></div>
+                                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-10 h-3 bg-slate-900 rounded border border-slate-600 shadow-[inset_0_0_10px_#000] flex justify-center gap-1.5 p-0.5">
+                                    <div class="w-1.5 h-full bg-black rounded-sm"></div>
+                                    <div class="w-1.5 h-full bg-black rounded-sm"></div>
+                                </div>
+
+                                <div class="w-full h-full bg-slate-950 rounded-[3rem] relative flex flex-col justify-center items-center overflow-hidden border-[8px] border-slate-800 shadow-[inset_0_0_60px_rgba(0,0,0,1)] z-10 cursor-pointer" id="face-screen">
+                                    <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[length:100%_4px] pointer-events-none z-20 mix-blend-overlay"></div>
+                                    <div class="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent h-2/3 rounded-t-[3rem] pointer-events-none z-20"></div>
+
+                                    <div id="face-physics-wrapper" class="relative z-10 flex flex-col items-center w-full h-full justify-center">
+                                        <div id="cheek-left" class="absolute w-12 h-6 rounded-full filter blur-[12px] opacity-0 transition-opacity duration-500 pointer-events-none" style="top: 45%; left: 10%;"></div>
+                                        <div id="cheek-right" class="absolute w-12 h-6 rounded-full filter blur-[12px] opacity-0 transition-opacity duration-500 pointer-events-none" style="top: 45%; right: 10%;"></div>
+                                        <div id="tear-left" class="absolute w-2 h-4 bg-blue-400 rounded-full opacity-0 filter drop-shadow-[0_0_5px_#60a5fa] pointer-events-none transition-all duration-300" style="top: 40%; left: 30%;"></div>
+                                        <div id="tear-right" class="absolute w-2 h-4 bg-blue-400 rounded-full opacity-0 filter drop-shadow-[0_0_5px_#60a5fa] pointer-events-none transition-all duration-300" style="top: 40%; right: 30%;"></div>
+
+                                        <div class="flex gap-14 mb-10 relative items-center justify-center h-20 w-full" id="eyes-container">
+                                            <div class="w-12 h-16 bg-cyan-400 rounded-full shadow-[0_0_25px_currentColor] face-color-trans origin-center relative" id="left-eye">
+                                                <div class="dead-x absolute inset-0 hidden items-center justify-center text-red-500 font-bold text-3xl pointer-events-none">X</div>
+                                            </div>
+                                            <div class="w-12 h-16 bg-cyan-400 rounded-full shadow-[0_0_25px_currentColor] face-color-trans origin-center relative" id="right-eye">
+                                                <div class="dead-x absolute inset-0 hidden items-center justify-center text-red-500 font-bold text-3xl pointer-events-none">X</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="absolute bottom-16 flex items-center justify-center h-10 w-full">
+                                            <div class="w-16 h-2 bg-cyan-400 rounded-full shadow-[0_0_20px_currentColor] face-color-trans origin-center pointer-events-none" id="robot-mouth"></div>
+                                        </div>
+                                    </div>
+                                    <div id="face-mood-indicator" class="absolute top-4 text-[8px] text-cyan-400/50 font-bold uppercase tracking-widest terminal-font bg-cyan-950/30 px-3 py-1 rounded-md border border-cyan-500/10 z-10 pointer-events-none">SYS: NORMAL</div>
+                                    
+                                    <div id="overheat-overlay" class="absolute inset-0 bg-red-500/10 border-4 border-red-500/50 animate-pulse hidden z-30 pointer-events-none flex-col items-center justify-start pt-10">
+                                        <div class="bg-red-950/80 px-3 py-1 rounded text-red-400 terminal-font text-[10px] font-bold tracking-widest border border-red-500 shadow-[0_0_20px_#ef4444]"><i class="fa-solid fa-triangle-exclamation"></i> CORE OVERHEAT</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BACK INTERNAL -->
+                        <div class="head-back relative bg-[#0a100d]">
+                            <div class="absolute inset-0 bg-[linear-gradient(45deg,#0d1f16_25%,transparent_25%,transparent_75%,#0d1f16_75%,#0d1f16),linear-gradient(45deg,#0d1f16_25%,#0a100d_25%,#0a100d_75%,#0d1f16_75%,#0d1f16)] bg-[length:20px_20px] opacity-50"></div>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 z-10 p-4">
+                                <!-- Minimal Internal Repr for Maintenance -->
+                                <div class="relative w-32 h-32 flex items-center justify-center my-2">
+                                    <div class="absolute inset-0 border-4 border-slate-600 rounded-full bg-black/80 shadow-[0_0_30px_rgba(0,0,0,1)] overflow-hidden flex items-center justify-center z-20">
+                                        <div class="w-[130%] h-[130%] fan-blade relative flex items-center justify-center">
+                                            <div class="absolute w-full h-4 bg-slate-500/90 rotate-0 rounded-sm"></div>
+                                            <div class="absolute w-full h-4 bg-slate-500/90 rotate-45 rounded-sm"></div>
+                                            <div class="absolute w-full h-4 bg-slate-500/90 rotate-90 rounded-sm"></div>
+                                            <div class="absolute w-full h-4 bg-slate-500/90 rotate-[135deg] rounded-sm"></div>
+                                            <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-500 z-10 flex items-center justify-center shadow-lg">
+                                                <i class="fa-solid fa-microchip text-cyan-500 text-[12px]"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="absolute w-28 h-28 bg-purple-600/40 blur-2xl animate-pulse z-0"></div>
+                                </div>
+                                <div class="text-[8px] terminal-font text-purple-300 border border-purple-500/50 bg-black/60 px-3 py-1 rounded-sm shadow-[0_0_10px_rgba(168,85,247,0.5)]">QUANTUM V8 NEURAL-NET</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hardware Stats Panel -->
+            <div class="glass-panel rounded-2xl border border-gray-700 p-3 grid grid-cols-3 gap-3">
+                <div class="bg-slate-900/80 border border-slate-700 rounded-lg p-2.5 flex flex-col items-center justify-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-purple-500/5 group-hover:bg-purple-500/10 transition-colors"></div>
+                    <span class="text-[8px] text-gray-400 font-bold mb-1.5 tracking-wider"><i class="fa-solid fa-microchip text-purple-400"></i> CPU LOAD</span>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden mb-1 border border-slate-800">
+                        <div class="bg-gradient-to-r from-purple-600 to-purple-400 h-full w-[45%] shadow-[0_0_8px_#a855f7]"></div>
+                    </div>
+                    <span class="text-[10px] text-purple-300 terminal-font font-bold">45%</span>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700 rounded-lg p-2.5 flex flex-col items-center justify-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-red-500/5 group-hover:bg-red-500/10 transition-colors"></div>
+                    <span class="text-[8px] text-gray-400 font-bold mb-1.5 tracking-wider"><i class="fa-solid fa-temperature-half text-red-400"></i> CORE TEMP</span>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden mb-1 border border-slate-800">
+                        <div class="bg-gradient-to-r from-emerald-600 to-yellow-400 h-full w-[38%] shadow-[0_0_8px_#facc15]"></div>
+                    </div>
+                    <span class="text-[10px] text-yellow-300 terminal-font font-bold" id="temp-mini-text">42°C</span>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-700 rounded-lg p-2.5 flex flex-col items-center justify-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/10 transition-colors"></div>
+                    <span class="text-[8px] text-gray-400 font-bold mb-1.5 tracking-wider"><i class="fa-solid fa-memory text-blue-400"></i> RAM USAGE</span>
+                    <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden mb-1 border border-slate-800">
+                        <div class="bg-gradient-to-r from-blue-600 to-cyan-400 h-full w-[65%] shadow-[0_0_8px_#06b6d4]"></div>
+                    </div>
+                    <span class="text-[10px] text-cyan-300 terminal-font font-bold">12.4 TB</span>
+                </div>
+            </div>
+
+            <!-- ACTION CONTROL PANEL (6 BUTTONS GRID) -->
+            <div class="grid grid-cols-3 gap-2">
+                <button onclick="feedRobot()" class="bg-amber-600/20 hover:bg-amber-600/40 border border-amber-500/50 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 transition-all shadow-md group">
+                    <i class="fa-solid fa-cookie-bite text-amber-400 text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[8px] text-amber-100 font-bold tracking-wider">BISKUIT</span>
+                </button>
+                <button onclick="drinkRobot()" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/50 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 transition-all shadow-md group">
+                    <i class="fa-solid fa-bottle-droplet text-blue-400 text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[8px] text-blue-100 font-bold tracking-wider">COOLANT</span>
+                </button>
+                <button onclick="sleepRobot()" class="bg-slate-600/20 hover:bg-slate-600/40 border border-slate-500/50 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 transition-all shadow-md group">
+                    <i class="fa-solid fa-bed text-slate-400 text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[8px] text-slate-100 font-bold tracking-wider">TIDURKAN</span>
+                </button>
+
+                <!-- NEW FEATURES -->
+                <button onclick="toggleDrone()" class="bg-indigo-600/20 hover:bg-indigo-600/40 border border-indigo-500/50 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 transition-all shadow-md group relative">
+                    <i class="fa-solid fa-satellite text-indigo-400 text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[8px] text-indigo-100 font-bold tracking-wider">DRONE</span>
+                    <span class="absolute -top-1 -right-1 bg-indigo-500 text-white text-[6px] px-1 rounded animate-pulse">NEW</span>
+                </button>
+                <button onclick="playGacha()" class="bg-fuchsia-600/20 hover:bg-fuchsia-600/40 border border-fuchsia-500/50 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 transition-all shadow-md group relative">
+                    <i class="fa-solid fa-box-open text-fuchsia-400 text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[8px] text-fuchsia-100 font-bold tracking-wider">GACHA</span>
+                    <span class="absolute -top-1 -right-1 bg-fuchsia-500 text-white text-[6px] px-1 rounded animate-pulse">NEW</span>
+                </button>
+                <button onclick="fireLaser()" class="bg-red-600/20 hover:bg-red-600/40 border border-red-500/50 rounded-xl p-2.5 flex flex-col items-center justify-center gap-1.5 transition-all shadow-[0_0_15px_rgba(239,68,68,0.2)] group relative">
+                    <i class="fa-solid fa-crosshairs text-red-500 text-lg group-hover:scale-110 transition-transform"></i>
+                    <span class="text-[8px] text-red-100 font-bold tracking-wider">UJI LASER</span>
+                    <span class="absolute -top-1 -right-1 bg-red-600 text-white text-[6px] px-1 rounded animate-pulse">HOT</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-7 flex flex-col gap-5 h-full min-h-0">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 shrink-0">
+                
+                <!-- Webcam HUD Vision -->
+                <div class="glass-panel rounded-2xl border border-gray-700 p-4 flex flex-col gap-3">
+                    <div class="flex justify-between items-center border-b border-gray-700/50 pb-2">
+                        <h3 class="terminal-font text-xs font-bold text-gray-200 flex items-center gap-2">
+                            <i class="fa-solid fa-crosshairs text-cyan-400"></i> HUD VISION SENSOR
+                        </h3>
+                        <span id="vision-status" class="text-[8px] text-gray-500 font-bold tracking-wider uppercase bg-slate-900 px-2 py-0.5 rounded border border-gray-700">Offline</span>
+                    </div>
+
+                    <div class="w-full h-36 bg-slate-950 rounded-xl overflow-hidden border-2 border-slate-800 relative shadow-inner group">
+                        <div id="radar-overlay" class="absolute inset-0 pointer-events-none hidden z-10">
+                            <div class="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_70%,rgba(6,182,212,0.4)_100%)] origin-top-left animate-[spin_4s_linear_infinite] mix-blend-screen scale-[2.5] translate-x-1/2 translate-y-1/2"></div>
+                            <div class="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.2)_1px,transparent_1px)] bg-[length:20px_20px]"></div>
+                            <div class="w-full h-0.5 bg-cyan-400/80 shadow-[0_0_15px_#06b6d4] absolute animate-[scan_3s_ease-in-out_infinite_alternate]"></div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 border border-cyan-500/50 rounded-full flex items-center justify-center">
+                                <div class="w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_5px_#06b6d4]"></div>
+                            </div>
+                        </div>
+
+                        <video id="webcam-video" autoplay playsinline class="w-full h-full object-cover hidden saturate-150 contrast-125 sepia-[0.2] hue-rotate-[180deg]" style="transform: scaleX(-1);"></video>
+                        
+                        <div id="webcam-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-[#050810] text-slate-700 transition-colors group-hover:text-slate-600">
+                            <i class="fa-solid fa-camera mb-2 text-3xl"></i>
+                            <span class="text-[9px] font-bold terminal-font tracking-widest text-cyan-500/30">SENSOR STANDBY</span>
+                        </div>
+                    </div>
+                    
+                    <button id="toggle-cam-btn" onclick="toggleWebcam()" class="w-full text-[10px] font-bold px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 transition-all flex items-center justify-center gap-2 shadow-md text-white">
+                        <i class="fa-solid fa-power-off"></i> AKTIFKAN SENSOR VISUAL
+                    </button>
+                </div>
+
+                <!-- Log Terminal System -->
+                <div class="glass-panel rounded-2xl border border-gray-700 flex flex-col overflow-hidden h-[230px] shrink-0">
+                    <div class="bg-slate-900/90 py-2 px-3 border-b border-cyan-500/20 flex justify-between items-center backdrop-blur-md">
+                        <span class="text-[10px] terminal-font text-cyan-400 font-bold flex items-center gap-1.5"><i class="fa-solid fa-terminal"></i> SYS_LOG</span>
+                        <span class="flex gap-1"><div class="w-2 h-2 rounded-full bg-red-500"></div><div class="w-2 h-2 rounded-full bg-yellow-500"></div><div class="w-2 h-2 rounded-full bg-green-500"></div></span>
+                    </div>
+                    <div id="system-log" class="p-3 overflow-y-auto flex-grow terminal-font text-[9px] space-y-1.5 bg-[#02040a]/90 text-gray-400 custom-scrollbar scroll-smooth">
+                        <div class="text-purple-400">> V8.5 MEGA UPDATE INSTALLED...</div>
+                        <div class="text-indigo-400">> MODULE [DRONE]: COMPANION DRONE READY.</div>
+                        <div class="text-fuchsia-400">> MODULE [GACHA]: LOOTBOX SYSTEM ACTIVE.</div>
+                        <div class="text-red-400">> MODULE [COMBAT]: LASER WEAPON UNLOCKED.</div>
+                        <div class="text-yellow-400">> SYSTEM READY. WAITING FOR USER INPUT...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Panel Fixed Layout -->
+            <div class="glass-panel rounded-3xl relative border border-gray-700 h-[450px] lg:h-auto lg:flex-1 lg:min-h-0 mt-2">
+                <div class="absolute inset-0 flex flex-col overflow-hidden rounded-3xl">
+                    <div class="bg-slate-900/90 p-3.5 border-b border-cyan-500/20 flex justify-between items-center z-10 backdrop-blur-md shrink-0">
+                        <h2 class="orbitron-font font-bold text-gray-200 flex items-center gap-2 text-sm tracking-wider">
+                            <i class="fa-solid fa-satellite-dish text-purple-500"></i> NEURAL LINK <span class="text-xs text-gray-500">(API: api-faa.my.id)</span>
+                        </h2>
+                        <span class="text-[9px] terminal-font text-cyan-400 bg-cyan-950/40 px-2 py-1 rounded border border-cyan-500/30 flex items-center gap-1.5 uppercase font-bold" id="connection-status">
+                            <i class="fa-solid fa-wifi text-[8px]"></i> Standby
+                        </span>
+                    </div>
+
+                    <div id="chat-box" class="flex-grow p-4 overflow-y-auto flex flex-col gap-4 terminal-font text-sm relative z-10 scroll-smooth custom-scrollbar bg-gradient-to-b from-transparent to-slate-900/30 min-h-0">
+                        <!-- Pesan awal dikosongkan, akan diisi setelah login -->
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="p-3 bg-slate-900/95 border-t border-gray-700 z-10 relative shrink-0">
+                        <div class="flex gap-2 relative">
+                            <button id="mic-btn" onclick="toggleSTT()" class="bg-slate-800 hover:bg-slate-700 text-gray-300 w-12 h-12 rounded-xl transition-all border border-gray-600 flex items-center justify-center flex-shrink-0 shadow-[0_4px_10px_rgba(0,0,0,0.5)] group relative">
+                                <i class="fa-solid fa-microphone group-hover:scale-110 transition-transform"></i>
+                                <div id="mic-pulse" class="absolute inset-0 rounded-xl border-2 border-red-500 animate-ping hidden"></div>
+                            </button>
+
+                            <input type="text" id="user-input" class="flex-grow bg-[#050810] border border-gray-600 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all placeholder-gray-600 terminal-font text-[13px] shadow-inner" placeholder="Ketik pesan santai lu di sini...">
+                                                        
+                            <button id="send-btn" class="bg-gradient-to-br from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white w-12 h-12 rounded-xl transition-all border border-cyan-400 flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(6,182,212,0.4)] group">
+                                <i class="fa-solid fa-paper-plane group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // ==== SYSTEM LOG ====
+        const systemLog = document.getElementById('system-log');
+        function addSystemLog(msg, type='info') {
+            const div = document.createElement('div');
+            let colorClass = 'text-gray-400';
+            if(type === 'error') colorClass = 'text-red-400';
+            if(type === 'system') colorClass = 'text-purple-400';
+            if(type === 'power') colorClass = 'text-yellow-400';
+            div.className = colorClass;
+            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
+            div.innerText = `[${time}] > ${msg}`;
+            systemLog.appendChild(div);
+            systemLog.scrollTop = systemLog.scrollHeight;
+        }
+
+        // ==== AUDIO SFX ENGINE ====
+        const sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSFX(type) {
+            if(sfxCtx.state === 'suspended') return;
+            const osc = sfxCtx.createOscillator(); const gain = sfxCtx.createGain();
+            osc.connect(gain); gain.connect(sfxCtx.destination);
+            const now = sfxCtx.currentTime;
+            
+            if(type === 'click') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(1200, now); osc.frequency.exponentialRampToValueAtTime(2000, now + 0.05);
+                gain.gain.setValueAtTime(0.05, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now); osc.stop(now + 0.05);
+            } else if(type === 'scan') {
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(300, now); osc.frequency.linearRampToValueAtTime(800, now + 0.15);
+                gain.gain.setValueAtTime(0.03, now); gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if(type === 'tech-open') {
+                osc.type = 'square'; osc.frequency.setValueAtTime(100, now); osc.frequency.exponentialRampToValueAtTime(50, now + 0.6);
+                gain.gain.setValueAtTime(0.08, now); gain.gain.linearRampToValueAtTime(0, now + 0.6);
+                osc.start(now); osc.stop(now + 0.6);
+            } else if(type === 'charge') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(200, now); osc.frequency.linearRampToValueAtTime(600, now + 0.4);
+                gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.1, now + 0.2); gain.gain.linearRampToValueAtTime(0, now + 0.5);
+                osc.start(now); osc.stop(now + 0.5);
+            } else if(type === 'error') {
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, now); osc.frequency.setValueAtTime(100, now + 0.2);
+                gain.gain.setValueAtTime(0.1, now); gain.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.start(now); osc.stop(now + 0.4);
+            } else if(type === 'eat') {
+                osc.type = 'square'; osc.frequency.setValueAtTime(400, now); osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now); osc.stop(now + 0.1);
+            } else if(type === 'drink') {
+                osc.type = 'sine'; osc.frequency.setValueAtTime(300, now); osc.frequency.linearRampToValueAtTime(200, now + 0.2);
+                gain.gain.setValueAtTime(0, now); gain.gain.linearRampToValueAtTime(0.1, now + 0.1); gain.gain.linearRampToValueAtTime(0, now + 0.2);
+                osc.start(now); osc.stop(now + 0.2);
+            } else if(type === 'shutter') {
+                osc.type = 'square'; osc.frequency.setValueAtTime(800, now); osc.frequency.exponentialRampToValueAtTime(100, now + 0.1);
+                gain.gain.setValueAtTime(0.2, now); gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now); osc.stop(now + 0.1);
+            } else if(type === 'laser') { // NEW SFX FOR COMBAT
+                osc.type = 'sawtooth'; osc.frequency.setValueAtTime(200, now); osc.frequency.exponentialRampToValueAtTime(50, now + 0.8);
+                gain.gain.setValueAtTime(0.3, now); gain.gain.linearRampToValueAtTime(0, now + 0.8);
+                osc.start(now); osc.stop(now + 0.8);
+            }
+        }
+        document.body.addEventListener('click', () => { if(sfxCtx.state === 'suspended') sfxCtx.resume(); }, {once:true});
+
+        // ==== MAINTENANCE MODE ====
+        let isMaintenance = false;
+        function toggleMaintenance() {
+            isMaintenance = !isMaintenance;
+            const inner = document.getElementById('robot-head-inner');
+            const btn = document.getElementById('btn-maintenance');
+            
+            if(isMaintenance) {
+                inner.classList.add('flipped');
+                btn.innerHTML = `<i class="fa-solid fa-times"></i> TUTUP PANEL`;
+                btn.classList.replace('text-yellow-400', 'text-slate-300');
+                btn.classList.replace('border-yellow-600/50', 'border-slate-500/50');
+                btn.classList.replace('bg-yellow-950/30', 'bg-slate-800');
+                playSFX('tech-open'); addSystemLog("Maintenance Mode: Aktif.", "system");
+            } else {
+                inner.classList.remove('flipped');
+                btn.innerHTML = `<i class="fa-solid fa-screwdriver-wrench"></i> MODE TEKNISI`;
+                btn.classList.replace('text-slate-300', 'text-yellow-400');
+                btn.classList.replace('border-slate-500/50', 'border-yellow-600/50');
+                btn.classList.replace('bg-slate-800', 'bg-yellow-950/30');
+                playSFX('click'); addSystemLog("Maintenance Mode: Nonaktif.", "system");
+            }
+        }
+
+        // ==== PHYSICS ENGINE V8.5 ====
+        let currentEmotion = 'NORMAL';
+        let currentAction = 'NONE';
+        let actionSfxInterval = null;
+        let isSpeaking = false;
+        let isDead = false;
+
+        const leftEye = document.getElementById('left-eye');
+        const rightEye = document.getElementById('right-eye');
+        const mouth = document.getElementById('robot-mouth');
+        const physicsWrapper = document.getElementById('face-physics-wrapper');
+        
+        let pState = {
+            eW: 48, eW_t: 48, eVW: 0, eH: 64, eH_t: 64, eVH: 0, eRotLeft: 0, eRotLeft_t: 0, eVRotL: 0, eRotRight: 0, eRotRight_t: 0, eVRotR: 0,
+            mW: 64, mW_t: 64, mVW: 0, mH: 8, mH_t: 8, mVH: 0, mRad: 99, mRad_t: 99, mVRad: 0, mY: 0, mY_t: 0, mVY: 0,
+            lookX: 0, lookX_t: 0, lookVX: 0, lookY: 0, lookY_t: 0, lookVY: 0, tilt: 0, tilt_t: 0, tiltV: 0, breathe: 0
+        };
+
+        function updatePhysics() {
+            const tension = 0.15; const friction = 0.7;
+
+            if (currentAction === 'EATING') {
+                pState.mW_t = 40 + Math.sin(Date.now() / 30) * 20; 
+                pState.mH_t = 10 + Math.abs(Math.sin(Date.now() / 30) * 30);
+                pState.mRad_t = 10;
+            } else if (currentAction === 'DRINKING') {
+                pState.mW_t = 30 + Math.sin(Date.now() / 150) * 10; 
+                pState.mH_t = 30 + Math.sin(Date.now() / 150) * 10;
+                pState.mRad_t = 50; 
+            } else if (currentAction === 'LASER') { // Laser windup animation
+                pState.eW_t = 80; pState.eH_t = 10;
+                pState.mW_t = 50; pState.mH_t = 30; pState.mRad_t = 10;
+                pState.tilt_t = (Math.random() - 0.5) * 5;
+            }
+
+            pState.eVW = (pState.eVW + (pState.eW_t - pState.eW) * tension) * friction; pState.eW += pState.eVW;
+            pState.eVH = (pState.eVH + (pState.eH_t - pState.eH) * tension) * friction; pState.eH += pState.eVH;
+            pState.eVRotL = (pState.eVRotL + (pState.eRotLeft_t - pState.eRotLeft) * tension) * friction; pState.eRotLeft += pState.eVRotL;
+            pState.eVRotR = (pState.eVRotR + (pState.eRotRight_t - pState.eRotRight) * tension) * friction; pState.eRotRight += pState.eVRotR;
+            pState.mVW = (pState.mVW + (pState.mW_t - pState.mW) * tension) * friction; pState.mW += pState.mVW;
+            pState.mVH = (pState.mVH + (pState.mH_t - pState.mH) * tension) * friction; pState.mH += pState.mVH;
+            pState.mVRad = (pState.mVRad + (pState.mRad_t - pState.mRad) * tension) * friction; pState.mRad += pState.mVRad;
+            pState.mVY = (pState.mVY + (pState.mY_t - pState.mY) * tension) * friction; pState.mY += pState.mVY;
+            
+            pState.lookVX = (pState.lookVX + (pState.lookX_t - pState.lookX) * 0.1) * 0.8; pState.lookX += pState.lookVX;
+            pState.lookVY = (pState.lookVY + (pState.lookY_t - pState.lookY) * 0.1) * 0.8; pState.lookY += pState.lookVY;
+            pState.tiltV = (pState.tiltV + (pState.tilt_t - pState.tilt) * 0.05) * 0.85; pState.tilt += pState.tiltV;
+            
+            pState.breathe = (isDead) ? 0 : Math.sin(Date.now() / (currentEmotion==='SICK'? 1000 : 600)) * (currentEmotion==='SLEEPY'? 1: 3);
+
+            if(currentEmotion === 'MALFUNCTION' && Math.random() > 0.8) {
+                pState.lookX += (Math.random()-0.5)*20; pState.lookY += (Math.random()-0.5)*20;
+            }
+
+            leftEye.style.width = `${Math.max(0, pState.eW)}px`; leftEye.style.height = `${Math.max(0, pState.eH)}px`; leftEye.style.transform = `rotate(${pState.eRotLeft}deg)`;
+            rightEye.style.width = `${Math.max(0, pState.eW)}px`; rightEye.style.height = `${Math.max(0, pState.eH)}px`; rightEye.style.transform = `rotate(${pState.eRotRight}deg)`;
+            mouth.style.width = `${Math.max(0, pState.mW)}px`; mouth.style.height = `${Math.max(0, pState.mH)}px`; mouth.style.borderRadius = `${Math.max(0, pState.mRad)}px`; mouth.style.transform = `translateY(${pState.mY}px)`;
+            
+            physicsWrapper.style.transform = `translate(${pState.lookX}px, ${pState.lookY + pState.breathe}px) rotate(${pState.tilt}deg)`;
+            requestAnimationFrame(updatePhysics);
+        }
+        updatePhysics();
+
+        // Eye tracking
+        const faceScreen = document.getElementById('face-screen');
+        faceScreen.addEventListener('mousemove', (e) => {
+            if(isMaintenance || isDead || currentEmotion === 'SLEEPY' || currentAction !== 'NONE') return;
+            const rect = faceScreen.getBoundingClientRect();
+            const mx = (e.clientX - rect.left) / rect.width - 0.5; const my = (e.clientY - rect.top) / rect.height - 0.5;
+            pState.lookX_t = mx * 40; pState.lookY_t = my * 40; pState.tilt_t = mx * 15;
+        });
+        faceScreen.addEventListener('mouseleave', () => { if(!isDead && currentAction === 'NONE') {pState.lookX_t = 0; pState.lookY_t = 0; pState.tilt_t = 0;} });
+
+        faceScreen.addEventListener('click', (e) => {
+            if (isDead || isMaintenance || currentAction !== 'NONE') return;
+            resetIdleTimer();
+            const rect = faceScreen.getBoundingClientRect();
+            const my = (e.clientY - rect.top) / rect.height;
+            
+            if(my < 0.3) {
+                neuralSync = Math.min(100, neuralSync + 10); coreTemp = Math.max(40, coreTemp - 5);
+                setEmotion('HAPPY'); playSFX('scan'); speakText("Hehe, mantap bro. Usap lagi jidat gua, adem nih otak.");
+            } else if(my > 0.4 && my < 0.7) {
+                neuralSync = Math.max(0, neuralSync - 15); coreTemp = Math.min(100, coreTemp + 15);
+                setEmotion('BERSERK'); playSFX('error'); speakText("Woi! Ngapain lu nyolok mata gua?! Sakit anjir!");
+            }
+        });
+
+        // Saccades & Blinks
+        setInterval(() => {
+            if(isDead || currentEmotion === 'SLEEPY' || isSpeaking || isMaintenance || currentAction !== 'NONE') return;
+            if(Math.random() > 0.6) { pState.lookX_t = (Math.random() - 0.5) * 30; pState.lookY_t = (Math.random() - 0.5) * 15; pState.tilt_t = pState.lookX_t * 0.3; } 
+            else { pState.lookX_t = 0; pState.lookY_t = 0; pState.tilt_t = 0; }
+        }, 2500);
+
+        setInterval(() => {
+            if (isDead || currentAction !== 'NONE') return;
+            if (currentEmotion === 'NORMAL' || currentEmotion === 'HAPPY' || currentEmotion === 'COOL') {
+                const oldH = pState.eH_t; const oldW = pState.eW_t;
+                pState.eH_t = 4; pState.eW_t = oldW * 1.2;
+                setTimeout(() => { pState.eH_t = oldH; pState.eW_t = oldW; }, 150);
+            }
+        }, 4000);
+
+        // ==== EMOTION SYSTEM ====
+        function setEmotion(emotion) {
+            if (emotion !== currentEmotion && emotion !== 'DEAD' && currentAction === 'NONE') playSFX('click');
+            if (isDead && emotion !== 'NORMAL') return; 
+            
+            currentEmotion = emotion;
+            isDead = (emotion === 'DEAD');
+            document.getElementById('face-mood-indicator').innerText = `SYS: ${emotion}`;
+
+            leftEye.style.borderRadius = "9999px"; rightEye.style.borderRadius = "9999px";
+            document.getElementById('cheek-left').style.opacity = 0; document.getElementById('cheek-right').style.opacity = 0;
+            document.getElementById('tear-left').style.opacity = 0; document.getElementById('tear-right').style.opacity = 0;
+            document.querySelectorAll('.dead-x').forEach(el => el.classList.add('hidden'));
+            physicsWrapper.classList.remove('glitch-effect');
+            physicsWrapper.classList.remove('shake-effect');
+            leftEye.classList.remove('party-mode'); rightEye.classList.remove('party-mode');
+
+            let color = '#06b6d4'; let twColor = 'bg-cyan-400';
+            pState.eRotLeft_t = 0; pState.eRotRight_t = 0; pState.mY_t = 0; pState.tilt_t = 0;
+
+            if (emotion === 'HAPPY') {
+                color = '#10b981'; twColor = 'bg-emerald-400';
+                pState.eW_t = 48; pState.eH_t = 50; leftEye.style.borderRadius = "9999px 9999px 0 0"; rightEye.style.borderRadius = "9999px 9999px 0 0";
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 80; pState.mH_t = 16; pState.mRad_t = 0; mouth.style.borderRadius = "0 0 16px 16px"; }
+            } else if (emotion === 'COOL') {
+                color = '#0ea5e9'; twColor = 'bg-sky-500';
+                pState.eW_t = 48; pState.eH_t = 25; leftEye.style.borderRadius = "0 0 9999px 9999px"; rightEye.style.borderRadius = "0 0 9999px 9999px";
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 40; pState.mH_t = 6; pState.mRad_t = 4; pState.eRotLeft_t = 5; pState.mY_t = -5; mouth.style.transform = "rotate(10deg)"; }
+            } else if (emotion === 'THINKING') {
+                color = '#818cf8'; twColor = 'bg-indigo-400';
+                pState.eW_t = 35; pState.eH_t = 35; pState.lookX_t = 25; pState.lookY_t = -20;
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 20; pState.mH_t = 20; pState.mRad_t = 50; pState.mY_t = 5; }
+            } else if (emotion === 'SAD') {
+                color = '#60a5fa'; twColor = 'bg-blue-400';
+                pState.eW_t = 48; pState.eH_t = 55; pState.eRotLeft_t = -20; pState.eRotRight_t = 20;
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 40; pState.mH_t = 12; pState.mRad_t = 0; pState.mY_t = 10; mouth.style.borderRadius = "16px 16px 0 0"; }
+            } else if (emotion === 'BERSERK') {
+                color = '#ef4444'; twColor = 'bg-red-500';
+                pState.eW_t = 60; pState.eH_t = 25; pState.eRotLeft_t = 30; pState.eRotRight_t = -30;
+                leftEye.style.borderRadius = "0 9999px 9999px 9999px"; rightEye.style.borderRadius = "9999px 0 9999px 9999px";
+                if (currentAction !== 'LASER') physicsWrapper.classList.add('shake-effect');
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 50; pState.mH_t = 15; pState.mRad_t = 4; pState.mY_t = -5; mouth.style.borderRadius = "5px 5px 20px 20px"; }
+            } else if (emotion === 'HACKING') {
+                color = '#22c55e'; twColor = 'bg-green-500';
+                pState.eW_t = 55; pState.eH_t = 8;
+                leftEye.style.borderRadius = "0"; rightEye.style.borderRadius = "0";
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 30; pState.mH_t = 4; pState.mRad_t = 0; pState.mY_t = -5; }
+            } else if (emotion === 'SLEEPY') {
+                color = '#94a3b8'; twColor = 'bg-slate-400';
+                pState.eW_t = 48; pState.eH_t = 4; pState.tilt_t = 20; pState.lookY_t = 10;
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 20; pState.mH_t = 4; pState.mRad_t = 4; pState.mY_t = 15; }
+            } else if (emotion === 'MALFUNCTION') {
+                color = '#d946ef'; twColor = 'bg-fuchsia-500';
+                pState.eW_t = 60; pState.eH_t = 10; pState.eRotLeft_t = 180; pState.eRotRight_t = 90;
+                physicsWrapper.classList.add('glitch-effect');
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 80; pState.mH_t = 5; pState.mRad_t = 0; pState.mY_t = -15; mouth.style.transform = "rotate(25deg)"; }
+            } else if (emotion === 'DEAD') {
+                color = '#000000'; twColor = 'bg-transparent';
+                pState.eW_t = 48; pState.eH_t = 48; pState.lookX_t = 0; pState.lookY_t = 0; pState.tilt_t = 45;
+                document.querySelectorAll('.dead-x').forEach(el => el.classList.remove('hidden'));
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 40; pState.mH_t = 2; pState.mRad_t = 0; pState.mY_t = 20; }
+            } else { 
+                color = '#06b6d4'; twColor = 'bg-cyan-400';
+                pState.eW_t = 48; pState.eH_t = 64;
+                if(!isSpeaking && currentAction === 'NONE') { pState.mW_t = 64; pState.mH_t = 8; pState.mRad_t = 99; mouth.style.transform = "none"; }
+            }
+
+            leftEye.className = `face-color-trans ${twColor} origin-center relative`; rightEye.className = `face-color-trans ${twColor} origin-center relative`;
+            
+            if(emotion === 'PARTY') {
+                leftEye.classList.add('party-mode'); rightEye.classList.add('party-mode');
+                pState.eW_t = 60; pState.eH_t = 20; pState.eRotLeft_t = 15; pState.eRotRight_t = -15; pState.tilt_t = 15;
+            }
+
+            if(!isDead && emotion !== 'PARTY') {
+                leftEye.style.boxShadow = `0 0 25px ${color}`; rightEye.style.boxShadow = `0 0 25px ${color}`;
+                mouth.style.backgroundColor = color; mouth.style.boxShadow = `0 0 20px ${color}`;
+                document.getElementById('antenna').style.backgroundColor = color; document.getElementById('antenna').style.boxShadow = `0 0 15px ${color}`;
+            } else if (isDead) {
+                leftEye.style.boxShadow = 'none'; rightEye.style.boxShadow = 'none';
+                mouth.style.backgroundColor = '#1e293b'; mouth.style.boxShadow = 'none';
+                document.getElementById('antenna').style.backgroundColor = '#1e293b'; document.getElementById('antenna').style.boxShadow = 'none';
+            }
+        }
+
+        // ==== MEGA UPDATE FEATURES (LASER, DRONE, GACHA, EAT) ====
+        
+        // 1. MAKAN & MINUM
+        function feedRobot() {
+            if(isDead || isMaintenance || currentAction !== 'NONE' || isSpeaking) return;
+            resetIdleTimer(); currentAction = 'EATING'; setEmotion('HAPPY');
+            mouth.style.backgroundColor = '#d97706'; mouth.style.boxShadow = '0 0 20px #d97706';
+            addSystemLog("ACTION: Menyuapkan Biskuit Data...", "system");
+            
+            let count = 0; actionSfxInterval = setInterval(() => { playSFX('eat'); count++; if(count > 10) clearInterval(actionSfxInterval); }, 250);
+
+            setTimeout(() => {
+                clearInterval(actionSfxInterval); currentAction = 'NONE'; setEmotion('NORMAL'); 
+                coreTemp = Math.max(40, coreTemp - 5); neuralSync = Math.min(100, neuralSync + 10); updateCoreUI();
+                speakText("Nyam nyam... Mantap biskuitnya cuy!");
+            }, 3000);
+        }
+
+        function drinkRobot() {
+            if(isDead || isMaintenance || currentAction !== 'NONE' || isSpeaking) return;
+            resetIdleTimer(); currentAction = 'DRINKING'; setEmotion('COOL');
+            mouth.style.backgroundColor = '#3b82f6'; mouth.style.boxShadow = '0 0 20px #3b82f6';
+            addSystemLog("ACTION: Memompa Liquid Coolant...", "system");
+            
+            let count = 0; actionSfxInterval = setInterval(() => { playSFX('drink'); count++; if(count > 7) clearInterval(actionSfxInterval); }, 400);
+
+            setTimeout(() => {
+                clearInterval(actionSfxInterval); currentAction = 'NONE'; setEmotion('NORMAL'); 
+                coreTemp = Math.max(40, coreTemp - 20); neuralSync = Math.min(100, neuralSync + 5); updateCoreUI();
+                speakText("Gluk gluk... Ahhh seger parah! Adem nih mesin.");
+            }, 3000);
+        }
+
+        function sleepRobot() {
+            if(isDead || isMaintenance) return;
+            resetIdleTimer(); setEmotion('SLEEPY');
+            addSystemLog("FORCE SLEEP MODE INITIATED.", "system");
+            speakText("Hoahm... Oke cuy, gua tidur dulu bentar.");
+        }
+
+        // 2. COMPANION DRONE
+        let droneActive = false;
+        let droneAngle = 0;
+        function toggleDrone() {
+            if(isDead) return;
+            droneActive = !droneActive;
+            const drone = document.getElementById('companion-drone');
+            if(droneActive) {
+                drone.classList.remove('hidden');
+                playSFX('scan'); addSystemLog("Companion Drone Deployed.", "system");
+                speakText("Drone aktif! Jaga area sekitar yak.");
+                requestAnimationFrame(animateDrone);
+            } else {
+                drone.classList.add('hidden');
+                playSFX('tech-open'); addSystemLog("Companion Drone Recalled.", "system");
+            }
+        }
+        function animateDrone() {
+            if(!droneActive) return;
+            droneAngle += 0.04;
+            const rX = 170; const rY = 40;
+            const x = Math.cos(droneAngle) * rX;
+            const y = Math.sin(droneAngle) * rY + Math.sin(droneAngle*4)*15 - 50;
+            
+            const drone = document.getElementById('companion-drone');
+            drone.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+            
+            if(Math.sin(droneAngle) > 0) { drone.style.zIndex = 30; drone.style.filter = 'brightness(1) scale(1)'; }
+            else { drone.style.zIndex = 0; drone.style.filter = 'brightness(0.5) scale(0.8)'; }
+            
+            requestAnimationFrame(animateDrone);
+        }
+
+        // 3. GACHA SYSTEM
+        function playGacha() {
+            if(isDead || isMaintenance || currentAction !== 'NONE' || coreTemp > 90) return;
+            resetIdleTimer(); currentAction = 'GACHA';
+            setEmotion('HAPPY'); playSFX('scan');
+            addSystemLog("GACHA INITIATED...", "system");
+            speakText("Bismillah gacha dapet item SSR cuy!");
+
+            setTimeout(() => {
+                const roll = Math.random();
+                if(roll < 0.15) {
+                    addSystemLog("SSR: QUANTUM COOLANT!", "power");
+                    coreTemp = 40; neuralSync = 100; setEmotion('PARTY');
+                    speakText("Gilaa! Dapet SSR Quantum Coolant! Seger parah mesin gua bro!");
+                } else if(roll < 0.45) {
+                    addSystemLog("SR: KODE CHEAT", "system");
+                    neuralSync = Math.min(100, neuralSync + 30); setEmotion('HACKING');
+                    speakText("Lumayan dapet SR kode cheat, otak gua makin kenceng.");
+                } else if(roll < 0.75) {
+                    addSystemLog("NORMAL: Biskuit Keras", "info");
+                    setEmotion('NORMAL');
+                    speakText("Yaelah, cuma dapet biskuit keras. Tapi bolehlah buat nyemil.");
+                } else {
+                    addSystemLog("ZONK: MALWARE DETECTED!", "error");
+                    coreTemp = Math.min(100, coreTemp + 20); setEmotion('MALFUNCTION');
+                    speakText("Sialan dapet zonk malware! Panas banget ini otak gua!");
+                }
+                updateCoreUI();
+                currentAction = 'NONE';
+            }, 3000);
+        }
+
+        // 4. COMBAT LASER (SCREEN SHAKE)
+        function fireLaser() {
+            if(isDead || isMaintenance || currentAction !== 'NONE') return;
+            resetIdleTimer(); currentAction = 'LASER';
+            setEmotion('BERSERK'); playSFX('charge');
+            addSystemLog("WARNING: LASER WEAPON ACTIVATED", "error");
+            speakText("Mundur lu semua! Gua mau nembak!");
+
+            // Windup for 2 seconds, then blast
+            setTimeout(() => {
+                playSFX('laser');
+                document.body.classList.add('shake-hard');
+                document.getElementById('laser-overlay').style.opacity = 1;
+                
+                // Blast duration 1.5s
+                setTimeout(() => {
+                    document.body.classList.remove('shake-hard');
+                    document.getElementById('laser-overlay').style.opacity = 0;
+                    currentAction = 'NONE'; setEmotion('NORMAL');
+                    coreTemp = Math.min(100, coreTemp + 40); // Huge heat generation
+                    updateCoreUI();
+                    speakText("Gila, panas banget mesin gua abis nembak!");
+                }, 1500);
+            }, 2000);
+        }
+
+        // ==== QUANTUM CORE & NEURAL SYNC ====
+        let neuralSync = 100;
+        let coreTemp = 40; 
+        let isOverclocked = false;
+        
+        function updateCoreUI() {
+            const syncText = document.getElementById('sync-text'); const syncBar = document.getElementById('sync-bar');
+            syncText.innerText = `${Math.floor(neuralSync)}%`; syncBar.style.width = `${neuralSync}%`;
+            if(neuralSync > 60) { syncBar.className = "h-full bg-purple-500 shadow-[0_0_8px_#a855f7] transition-all duration-500"; syncText.className = "text-xs text-purple-400 font-bold terminal-font"; } 
+            else if(neuralSync > 25) { syncBar.className = "h-full bg-yellow-500 shadow-[0_0_8px_#eab308] transition-all duration-500"; syncText.className = "text-xs text-yellow-400 font-bold terminal-font"; } 
+            else { syncBar.className = "h-full bg-red-600 shadow-[0_0_8px_#dc2626] transition-all duration-500"; syncText.className = "text-xs text-red-500 font-bold terminal-font animate-pulse"; }
+
+            const tempText = document.getElementById('temp-text'); const tempBar = document.getElementById('temp-bar'); const overlay = document.getElementById('overheat-overlay');
+            tempText.innerText = `${Math.floor(coreTemp)}°C`; tempBar.style.width = `${coreTemp}%`;
+            document.getElementById('temp-mini-text').innerText = `${Math.floor(coreTemp)}°C`;
+            
+            if(coreTemp > 85) {
+                tempBar.className = "h-full bg-red-600 shadow-[0_0_10px_#dc2626] transition-all duration-500"; tempText.className = "text-xs text-red-500 font-bold terminal-font animate-pulse";
+                if(!isDead) overlay.classList.remove('hidden');
+                if(Math.random() > 0.8 && currentEmotion !== 'MALFUNCTION' && !isDead && currentAction === 'NONE') setEmotion('MALFUNCTION');
+            } else if(coreTemp > 65) {
+                tempBar.className = "h-full bg-orange-500 shadow-[0_0_8px_#f97316] transition-all duration-500"; tempText.className = "text-xs text-orange-400 font-bold terminal-font"; overlay.classList.add('hidden');
+            } else {
+                tempBar.className = "h-full bg-cyan-500 shadow-[0_0_8px_#06b6d4] transition-all duration-500"; tempText.className = "text-xs text-cyan-400 font-bold terminal-font"; overlay.classList.add('hidden');
+            }
+
+            if(neuralSync <= 0 && !isDead) {
+                neuralSync = 0; setEmotion('DEAD'); addSystemLog("CRITICAL: Neural Sync Lost.", "error");
+                document.getElementById('ai-status-text').innerText = "DISCONNECTED"; document.getElementById('ai-status-dot').className = "inline-block w-2 h-2 rounded-full bg-red-500";
+                document.getElementById('connection-status').innerHTML = '<i class="fa-solid fa-power-off text-[8px]"></i> KONEKSI TERPUTUS';
+            }
+        }
+
+        setInterval(() => {
+            if(isDead) return;
+            if(idleTime > 10) neuralSync -= (isOverclocked ? 1.5 : 0.5); else neuralSync += 0.5;
+            if(isOverclocked) { coreTemp += 2.0; if(neuralSync < 100) neuralSync += 1; } 
+            else if(isSpeaking || currentAction !== 'NONE') coreTemp += 0.8; 
+            else if(currentEmotion === 'SLEEPY') coreTemp -= 3.0; // Cools down faster when sleeping
+            else coreTemp -= 1.5;
+            
+            if(neuralSync > 100) neuralSync = 100; if(neuralSync < 0) neuralSync = 0;
+            if(coreTemp < 40) coreTemp = 40; if(coreTemp > 100) coreTemp = 100;
+            updateCoreUI();
+        }, 2000);
+
+        function toggleOverclock() {
+            if(isDead && neuralSync <= 0) {
+                neuralSync = 20; coreTemp = 60; setEmotion('BERSERK');
+                document.getElementById('ai-status-text').innerText = "AI ACTIVE"; document.getElementById('ai-status-dot').className = "inline-block w-2 h-2 rounded-full bg-cyan-500 animate-pulse";
+                document.getElementById('connection-status').innerHTML = '<i class="fa-solid fa-wifi text-[8px]"></i> Standby';
+                speakText("Wah gila lu! Pake kejut sistem segala, idup lagi dah gua. BERSERK MODE ON!");
+            }
+            isOverclocked = !isOverclocked;
+            const btn = document.getElementById('btn-overclock'); const ind = document.getElementById('oc-indicator');
+            if(isOverclocked) {
+                btn.classList.add('border-cyan-500', 'text-cyan-400', 'shadow-[0_0_15px_rgba(6,182,212,0.4)]'); btn.classList.remove('border-slate-600', 'text-gray-400');
+                ind.classList.replace('bg-slate-600', 'bg-cyan-400'); ind.classList.add('shadow-[0_0_10px_#06b6d4]');
+                playSFX('charge'); addSystemLog("OVERCLOCK INITIATED.", "power"); if(!isDead && coreTemp < 80) setEmotion('BERSERK');
+            } else {
+                btn.classList.remove('border-cyan-500', 'text-cyan-400', 'shadow-[0_0_15px_rgba(6,182,212,0.4)]'); btn.classList.add('border-slate-600', 'text-gray-400');
+                ind.classList.replace('bg-cyan-400', 'bg-slate-600'); ind.classList.remove('shadow-[0_0_10px_#06b6d4]');
+                playSFX('tech-open'); addSystemLog("OVERCLOCK DISABLED.", "power"); setEmotion('NORMAL');
+            }
+            updateCoreUI();
+        }
+
+        // ==== AUDIO TTS ====
+        let currentUtterance = null;
+        let microExprInterval = null;
+        let speechInterval = null;
+
+        function animateMouthSpeaking(isPlaying) {
+            if(!isPlaying) {
+                isSpeaking = false; clearInterval(speechInterval); clearInterval(microExprInterval);
+                if(!isDead && currentEmotion !== 'PARTY' && currentAction === 'NONE') setEmotion(currentEmotion); 
+                document.getElementById('audio-wave-panel').classList.add('hidden');
+                return;
+            }
+            isSpeaking = true; document.getElementById('audio-wave-panel').classList.remove('hidden');
+            mouth.style.borderRadius = "16px";
+            
+            let toggle = false;
+            speechInterval = setInterval(() => {
+                toggle = !toggle;
+                if(toggle) { pState.mW_t = 30 + Math.random() * 20; pState.mH_t = 15 + Math.random() * 25; pState.mRad_t = 16; } 
+                else { pState.mW_t = 50 + Math.random() * 20; pState.mH_t = 4 + Math.random() * 4; pState.mRad_t = 4; }
+            }, 120);
+
+            let baseEyeH = pState.eH_t;
+            microExprInterval = setInterval(() => {
+                if(isDead || currentEmotion === 'SLEEPY' || currentEmotion === 'PARTY') return;
+                let action = Math.random();
+                if(action < 0.2) { pState.eH_t = baseEyeH * 0.7; pState.tilt_t = (Math.random() - 0.5) * 15; } 
+                else if(action < 0.4) { pState.eH_t = baseEyeH * 1.1; pState.lookX_t = (Math.random() - 0.5) * 15; } 
+                else { pState.eH_t = baseEyeH; pState.tilt_t = 0; pState.lookX_t = 0; }
+            }, 500);
+        }
+
+        function speakText(text) {
+            if(isDead) return;
+            if (!('speechSynthesis' in window)) { addSystemLog("Error: Browser tidak mendukung TTS", "error"); return; }
+            const cleanText = text.replace(/\[EMOTION:[A-Z]+\]\s*/g, '');
+            if(!cleanText.trim()) return;
+
+            window.speechSynthesis.cancel();
+            currentUtterance = new SpeechSynthesisUtterance(cleanText);
+            currentUtterance.lang = 'id-ID'; currentUtterance.rate = 1.05; currentUtterance.pitch = 0.5; 
+            currentUtterance.onstart = () => animateMouthSpeaking(true);
+            currentUtterance.onend = () => animateMouthSpeaking(false);
+            currentUtterance.onerror = (e) => { if(e.error !== 'interrupted' && e.error !== 'canceled') animateMouthSpeaking(false); };
+            window.speechSynthesis.speak(currentUtterance);
+        }
+
+        // ==== STT (MIC) ====
+        let recognition = null; let isListening = false;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRec(); recognition.lang = 'id-ID'; recognition.interimResults = false;
+            recognition.onstart = function() {
+                isListening = true; resetIdleTimer();
+                const micBtn = document.getElementById('mic-btn');
+                micBtn.classList.replace('bg-slate-800', 'bg-red-600/20'); micBtn.classList.replace('border-gray-600', 'border-red-500');
+                document.getElementById('mic-pulse').classList.remove('hidden');
+                document.getElementById('user-input').placeholder = "Mendengarkan...";
+                playSFX('scan'); addSystemLog("Mic ON", "system");
+            };
+            recognition.onresult = function(event) { document.getElementById('user-input').value = event.results[0][0].transcript; playSFX('click'); sendMessage(); };
+            recognition.onend = function() {
+                isListening = false;
+                const micBtn = document.getElementById('mic-btn');
+                micBtn.classList.replace('bg-red-600/20', 'bg-slate-800'); micBtn.classList.replace('border-red-500', 'border-gray-600');
+                document.getElementById('mic-pulse').classList.add('hidden'); document.getElementById('user-input').placeholder = "Ketik pesan santai lu di sini...";
+            };
+        }
+        function toggleSTT() {
+            if(isDead) return;
+            if(!recognition) { alert("Mic tidak didukung."); return; }
+            if(isListening) recognition.stop(); else recognition.start();
+        }
+
+        // ==== WEBCAM ====
+        let stream = null; let isCamActive = false; const videoEl = document.getElementById('webcam-video');
+        async function toggleWebcam() {
+            if(isDead) return;
+            if (isCamActive) {
+                if(stream) stream.getTracks().forEach(t => t.stop());
+                videoEl.classList.add('hidden'); document.getElementById('webcam-placeholder').classList.remove('hidden');
+                document.getElementById('toggle-cam-btn').innerHTML = '<i class="fa-solid fa-power-off"></i> AKTIFKAN SENSOR VISUAL';
+                document.getElementById('radar-overlay').classList.add('hidden');
+                document.getElementById('vision-status').innerText = 'OFFLINE'; document.getElementById('vision-status').className = 'text-[8px] text-gray-500 font-bold tracking-wider uppercase bg-slate-900 px-2 py-0.5 rounded border border-gray-700';
+                isCamActive = false; playSFX('tech-open'); addSystemLog("Vision Sensor Deactivated.", "info");
+            } else {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                    videoEl.srcObject = stream; videoEl.classList.remove('hidden'); document.getElementById('webcam-placeholder').classList.add('hidden');
+                    document.getElementById('toggle-cam-btn').innerHTML = '<i class="fa-solid fa-power-off"></i> MATIKAN SENSOR VISUAL';
+                    document.getElementById('radar-overlay').classList.remove('hidden');
+                    document.getElementById('vision-status').innerText = 'ONLINE'; document.getElementById('vision-status').className = 'text-[8px] text-cyan-300 font-bold bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/50 animate-pulse';
+                    isCamActive = true; playSFX('scan'); addSystemLog("Vision Sensor ONLINE.", "system");
+                } catch (err) { alert("Gagal akses kamera."); addSystemLog("Kamera gagal diakses.", "error"); }
+            }
+        }
+
+        // ==== AUTO-IDLE & FOTOGRAFI ====
+        let idleTime = 0;
+        function resetIdleTimer() { idleTime = 0; if (currentEmotion === 'SLEEPY' && currentAction === 'NONE') setEmotion('NORMAL'); }
+        
+        setInterval(() => {
+            if(isDead || isSpeaking || isMaintenance || isListening || currentAction !== 'NONE' || currentEmotion === 'SLEEPY') return;
+            idleTime++;
+            if(idleTime === 35) {
+                const idlePhrases = ["Woi, lu ngilang kemana dah? Sepi amat.", "Kalo lu gabut, mending gacha bang.", "Sistem gua bosan nih nungguin lu ngetik.", "Gua tidur aja kali ya kalo kaga diajak ngobrol..."];
+                let msg = idlePhrases[Math.floor(Math.random() * idlePhrases.length)];
+                setEmotion(Math.random() > 0.5 ? 'SAD' : 'THINKING'); speakText(msg); appendBotMessage(msg);
+                idleTime = 0;
+            }
+        }, 1000);
+
+        function takePhoto() {
+            playSFX('shutter');
+            const flash = document.getElementById('flash-effect');
+            flash.style.opacity = 1;
+            setTimeout(() => { flash.style.opacity = 0; }, 100);
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = videoEl.videoWidth; canvas.height = videoEl.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.translate(canvas.width, 0); ctx.scale(-1, 1);
+            ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+            const imgData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            setTimeout(() => {
+                chatBox.insertAdjacentHTML('beforeend', `<div class="flex gap-3 justify-start opacity-0 translate-y-4 animate-[slideIn_0.3s_ease-out_forwards]">
+                    <div class="w-9 h-9 rounded-full bg-slate-800 border border-cyan-500/50 flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-robot text-cyan-400 text-sm"></i></div>
+                    <div class="bg-slate-800/80 border border-gray-600 rounded-2xl rounded-tl-sm p-3 max-w-[85%] text-gray-200 shadow-lg">
+                        <p class="text-[12px] mb-2 font-bold text-cyan-400">Jepret! Cek muka lu bro:</p>
+                        <img src="${imgData}" class="rounded-xl border border-cyan-500/30 w-full saturate-150 contrast-125 sepia-[0.2] hue-rotate-[180deg]">
+                    </div></div>`);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                setEmotion('HAPPY'); speakText("Gimana? Keren kan filter siber gua?");
+            }, 500);
+        }
+
+        // ==== API CHAT & MINI-GAME ====
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+
+        let hackingGame = { active: false, target: 0, attempts: 0 };
+        let userName = "GUEST"; // Variabel untuk menyimpan nama user
+
+        function establishConnection() {
+            const nameInput = document.getElementById('login-username').value.trim();
+            if(!nameInput) {
+                document.getElementById('login-username').classList.add('border-red-500', 'shake-effect');
+                setTimeout(() => document.getElementById('login-username').classList.remove('border-red-500', 'shake-effect'), 500);
+                playSFX('error');
+                return;
+            }
+
+            // Set nama user
+            userName = nameInput.toUpperCase();
+            document.getElementById('creator-name-display').innerText = userName;
+            
+            playSFX('charge');
+            const overlay = document.getElementById('login-overlay');
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            
+            setTimeout(() => { 
+                overlay.style.display = 'none'; 
+                // Inisiasi boot awal setelah login
+                setEmotion('COOL'); 
+                addSystemLog(`V8.5 INITIALIZED. USER [${userName}] CONNECTED.`, "system"); 
+                
+                const initialGreeting = `Woi ${userName}! V8.5 udah aktif! Gua sekarang punya Drone peliharaan, sistem Gacha, sama mode Tempur Laser. Jangan mencet tombol Laser sembarangan yak, ntar layar lu pecah cuy!`;
+                appendBotMessage(initialGreeting);
+                speakText(initialGreeting);
+            }, 700);
+        }
+
+        function appendUserMessage(text) {
+            chatBox.insertAdjacentHTML('beforeend', `<div class="flex gap-3 justify-end opacity-0 translate-y-4 animate-[slideIn_0.3s_ease-out_forwards]">
+                <div class="bg-cyan-600/20 border border-cyan-500/50 rounded-2xl rounded-tr-sm p-3 max-w-[85%] text-cyan-100 shadow-md text-[13px]"><p>${text}</p></div></div>`);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function appendBotMessage(text) {
+            chatBox.insertAdjacentHTML('beforeend', `<div class="flex gap-3 justify-start opacity-0 translate-y-4 animate-[slideIn_0.3s_ease-out_forwards]">
+                <div class="w-9 h-9 rounded-full bg-slate-800 border border-cyan-500/50 flex items-center justify-center flex-shrink-0 mt-1 shadow-[0_0_15px_rgba(6,182,212,0.4)]"><i class="fa-solid fa-robot text-cyan-400 text-sm"></i></div>
+                <div class="bg-slate-800/80 border border-gray-600 rounded-2xl rounded-tl-sm p-3.5 max-w-[85%] text-gray-200 shadow-lg leading-relaxed text-[13px]"><p>${text.replace(/\n/g, '<br>')}</p></div></div>`);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function processSlashCommand(cmd) {
+            let msg = "";
+            if(cmd === '/help') { 
+                msg = "Perintah Rahasia:<br>- <b>/scan</b>: Aktifkan Radar Visual<br>- <b>/foto</b>: Ambil foto<br>- <b>/crack</b>: Game Hack<br>- <b>/party</b>: Mode Disko<br>- <b>/sleep</b>: Matikan Sistem"; 
+                setEmotion('HACKING'); speakText("Ini list rahasia gua bro."); 
+            } 
+            else if(cmd === '/scan') { if(!isCamActive) toggleWebcam(); setEmotion('HACKING'); msg = "Memindai area sekitar... Aman."; speakText(msg); } 
+            else if(cmd === '/foto') {
+                if(!isCamActive) { msg = "Nyalain dulu sensor kameranya woi!"; setEmotion('BERSERK'); speakText(msg); } 
+                else { takePhoto(); document.getElementById('connection-status').innerHTML = `<i class="fa-solid fa-wifi text-[8px]"></i> Standby`; return; }
+            } 
+            else if(cmd === '/crack') { 
+                hackingGame.active = true; hackingGame.target = Math.floor(Math.random() * 100); hackingGame.attempts = 5;
+                setEmotion('HACKING'); playSFX('scan'); addSystemLog("MINIGAME INITIATED", "system");
+                msg = "[TERMINAL OVERRIDE]\nTebak sandi 2 digit (0-99). Lu punya 5 kesempatan. Masukkan angkanya!"; speakText("Coba tebak sandi gua kalo lu jago."); 
+            } 
+            else if(cmd === '/party') { setEmotion('PARTY'); msg = "MODE DISKO AKTIF! Waktunya joget cuy!"; speakText(msg); playSFX('scan'); } 
+            else if(cmd === '/sleep') { sleepRobot(); return; } 
+            else { msg = "Command gak jelas. Ketik /help cuy."; setEmotion('CONFUSED'); speakText(msg); }
+            
+            appendBotMessage(msg);
+            document.getElementById('connection-status').innerHTML = `<i class="fa-solid fa-wifi text-[8px]"></i> Standby`;
+        }
+
+        async function sendMessage() {
+            if(isDead) { addSystemLog("Sistem terputus. Tekan OVERCLOCK untuk reboot.", "error"); return; }
+            const text = userInput.value.trim(); if (!text) return;
+
+            resetIdleTimer(); playSFX('click'); appendUserMessage(text); userInput.value = '';
+            document.getElementById('connection-status').innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-yellow-400 animate-pulse"></span> Mengirim data...`;
+            
+            if(text.startsWith('/')) { processSlashCommand(text.toLowerCase()); return; }
+
+            // Hacking Minigame Logic
+            if(hackingGame.active) {
+                const guess = parseInt(text);
+                if(isNaN(guess)) {
+                    setEmotion('BERSERK'); speakText("Itu bukan angka woi! Masukkin angka!"); appendBotMessage("Sistem ERROR: Input tidak valid. Masukkan angka!");
+                } else {
+                    hackingGame.attempts--;
+                    if(guess === hackingGame.target) {
+                        hackingGame.active = false; setEmotion('SAD'); playSFX('error');
+                        speakText("Wah gila, lu berhasil nge-hack sistem gua."); appendBotMessage(`[ACCESS GRANTED] Password ${hackingGame.target} benar. Lu jago juga cuy!`);
+                    } else if (hackingGame.attempts <= 0) {
+                        hackingGame.active = false; setEmotion('LAUGHING'); playSFX('error');
+                        speakText(`Mampus lu gagal! Sandinya ${hackingGame.target}.`); appendBotMessage(`[ACCESS DENIED] Kesempatan habis! Sandinya adalah ${hackingGame.target}. Cupu lu!`);
+                    } else {
+                        setEmotion('HACKING'); playSFX('scan');
+                        let clue = guess > hackingGame.target ? "Terlalu BESAR" : "Terlalu KECIL";
+                        speakText(`Salah! ${clue}. Sisa ${hackingGame.attempts} kali lagi.`); appendBotMessage(`Salah! Angka tebakanmu ${clue}. Sisa kesempatan: ${hackingGame.attempts}`);
+                    }
+                }
+                document.getElementById('connection-status').innerHTML = `<i class="fa-solid fa-wifi text-[8px]"></i> Standby`;
+                return;
+            }
+
+            let coreContext = `Sync: ${Math.floor(neuralSync)}%. Suhu: ${Math.floor(coreTemp)}°C. `;
+            if(coreTemp > 85) coreContext += "Suhu overheat! Lu hampir meledak! ";
+            if(isOverclocked) coreContext += "Lu lagi OVERCLOCK! Jawab dengan sangat ngegas dan agresif! ";
+            if(droneActive) coreContext += "Ada drone peliharaan lu yang lagi terbang muterin lu. ";
+            let cmdContext = "Lu bisa dimainin game hack pake /crack, difoto pake /foto, atau bisa nembak pake UJI LASER.";
+
+            // Beritahu AI nama penggunanya di dalam system prompt
+            const sysPrompt = `Kamu adalah Zeka V8.5, AI cowok tongkrongan yang asik. Lu sekarang lagi ngobrol sama majikan/teman lu yang namanya ${userName}. Pakai lu/gua, SANGAT SINGKAT (maks 2 kalimat). ${coreContext} ${cmdContext} WAJIB mulai balasan dengan SATU tag emosi: [EMOTION:HAPPY], [EMOTION:COOL], [EMOTION:BERSERK], [EMOTION:HACKING], [EMOTION:CONFUSED], [EMOTION:SAD], [EMOTION:THINKING], [EMOTION:SLEEPY], atau [EMOTION:NORMAL]. Jawab: ${text}`;
+
+            try {
+                const res = await fetch(`https://api-faa.my.id/faa/ai-realtime?text=${encodeURIComponent(sysPrompt)}`);
+                const data = await res.json();
+                let botReply = data.response || data.result || data.message || data.text || "Sinyal putus bro.";
+                const match = botReply.match(/\[EMOTION:([A-Z]+)\]/);
+                if(match) { setEmotion(match[1]); botReply = botReply.replace(/\[EMOTION:[A-Z]+\]\s*/g, ''); }
+                appendBotMessage(botReply); speakText(botReply);
+            } catch(e) { 
+                playSFX('error');
+                chatBox.insertAdjacentHTML('beforeend', `<div class="flex gap-3 justify-start opacity-0 translate-y-4 animate-[slideIn_0.3s_ease-out_forwards]">
+                    <div class="w-9 h-9 rounded-full bg-red-900/50 border border-red-500/50 flex items-center justify-center flex-shrink-0 mt-1"><i class="fa-solid fa-triangle-exclamation text-red-400 text-sm"></i></div>
+                    <div class="bg-red-900/20 border border-red-700 rounded-2xl rounded-tl-sm p-3.5 max-w-[85%] text-red-200 shadow-md text-[13px]"><p>Gagal kirim ke server, cuy. Cek inet lu.</p></div></div>`);
+            }
+            document.getElementById('connection-status').innerHTML = `<i class="fa-solid fa-wifi text-[8px]"></i> Standby`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') sendMessage(); });
+        
+        // Hapus `setTimeout` boot sequence lama di sini, karena sudah dipindah ke fungsi establishConnection()
+    </script>
+</body>
+</html>
